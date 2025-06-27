@@ -103,6 +103,10 @@
 #include "hw_device_drm.h"
 #include "hw_info_interface.h"
 
+#ifdef UDFPS_ZPOS
+#include <display/drm/sde_drm.h>
+#endif
+
 #define __CLASS__ "HWDeviceDRM"
 
 #ifndef DRM_FORMAT_MOD_QCOM_COMPRESSED
@@ -1303,7 +1307,16 @@ void HWDeviceDRM::SetupAtomic(Fence::ScopedRef &scoped_ref, HWLayers *hw_layers,
         if (update_config) {
           drm_atomic_intf_->Perform(DRMOps::PLANE_SET_ALPHA, pipe_id, layer.plane_alpha);
 
+#ifdef UDFPS_ZPOS
+          uint32_t z_order = pipe_info->z_order;
+          if (layer.flags.fod_pressed) {
+            z_order |= FOD_PRESSED_LAYER_ZORDER;
+          }
+          drm_atomic_intf_->Perform(DRMOps::PLANE_SET_ZORDER, pipe_id, z_order);
+#else
+
           drm_atomic_intf_->Perform(DRMOps::PLANE_SET_ZORDER, pipe_id, pipe_info->z_order);
+#endif
 
           DRMBlendType blending = {};
           SetBlending(layer.blending, &blending);

@@ -182,6 +182,7 @@ PRODUCT_VENDOR_PROPERTIES +=  vendor.display.enable_async_powermode=1
 SOONG_CONFIG_NAMESPACES += qtidisplay
 # Soong Keys
 SOONG_CONFIG_qtidisplay := drmpp headless llvmsa gralloc4 displayconfig_enabled default var1 var2 var3
+SOONG_CONFIG_qtidisplay += udfps
 
 # Soong Values
 SOONG_CONFIG_qtidisplay_drmpp := true
@@ -194,6 +195,7 @@ SOONG_CONFIG_qtidisplay_default := true
 SOONG_CONFIG_qtidisplay_var1 := false
 SOONG_CONFIG_qtidisplay_var2 := false
 SOONG_CONFIG_qtidisplay_var3 := false
+SOONG_CONFIG_qtidisplay_udfps := false
 
 ifeq ($(call is-vendor-board-platform,QCOM),true)
     SOONG_CONFIG_qtidisplay_displayconfig_enabled := true
